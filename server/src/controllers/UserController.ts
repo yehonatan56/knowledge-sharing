@@ -12,12 +12,12 @@ import { IUser } from "../models/modelsFunctions/modelsTypes";
 class UserController {
   static listAll = async (req: Request, res: Response, next: NextFunction) => {
     // Define the query to execute based on the role
-    let query;
-    if ((req as CustomRequest).token.payload.role === ROLES.USER) {
-      query = User.find({ role: ROLES.USER });
-    } else {
-      query = User.find();
-    }
+    let query = User.find();
+    // if ((req as CustomRequest).token.payload.role === ROLES.USER) {
+    //   query = User.find({ role: ROLES.USER });
+    // } else {
+    //   query = User.find();
+    // }
 
     // Execute the query
     const users = await query.select(["_id", "username", "role"]);
