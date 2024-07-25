@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 import { ROLES } from "../utils/constants";
-import { IUser, UserDoc, userModelInterface } from "./modelsFunctions/modelsTypes";
+import {
+  IUser,
+  UserDoc,
+  userModelInterface,
+} from "./modelsFunctions/modelsTypes";
 import { usernameValidator } from "./modelsFunctions/validators";
 import { apiValidator } from "./modelsFunctions/apiValidator";
 
@@ -15,9 +19,9 @@ const userSchema = new mongoose.Schema<IUser>(
       minLength: [8, "Username too short"],
       maxLength: [40, "Username too long"],
       validate: {
-        validator:usernameValidator,
+        validator: usernameValidator,
         message: "Username already in use.",
-      }
+      },
     },
     password: {
       type: String,
@@ -32,10 +36,11 @@ const userSchema = new mongoose.Schema<IUser>(
       default: ROLES.USER,
     },
     articles: [],
+    followers: [],
   },
   { timestamps: true }
 );
 
 const User = mongoose.model<UserDoc, userModelInterface>("User", userSchema);
-apiValidator(); 
-export { User , userSchema};
+apiValidator();
+export { User, userSchema };

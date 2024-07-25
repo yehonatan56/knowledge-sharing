@@ -20,7 +20,13 @@ class UserController {
     // }
 
     // Execute the query
-    const users = await query.select(["_id", "username", "role"]);
+    const users = await query.select([
+      "_id",
+      "username",
+      "role",
+      "articles",
+      "followers",
+    ]);
 
     // Send the users object
     res.status(200).type("json").send(users);
@@ -43,7 +49,13 @@ class UserController {
     }
 
     // Mongoose automatically casts the id to ObjectID
-    const user = await User.findById(id).select(["_id", "username", "role"]);
+    const user = await User.findById(id).select([
+      "_id",
+      "username",
+      "role",
+      "articles",
+      "followers",
+    ]);
     if (!user) throw new NotFoundError(`User with ID ${id} not found`);
 
     res.status(200).type("json").send(user?.toJSON());
@@ -60,14 +72,14 @@ class UserController {
       // user = User.build({ username, password, role, articles } as IUser);
       user = new User({ username, password, role, articles }); // Save the user
       await user.save();
+      res.status(201).type("json").send(user?.toJSON());
     } catch (e: any) {
       console.error(e);
       const error = e as Error.ValidationError;
-      throw new ClientError(processErrors(error));
+      res.status(400).type("json").send(processErrors(error));
     }
 
-    // If all ok, send 201 response
-    res.status(201).type("json").send(user.toJSON());
+    // If all ok                 , send 201 response
   };
 
   static editUser = async (req: Request, res: Response, next: NextFunction) => {
@@ -104,12 +116,11 @@ class UserController {
     // Save and catch all validation errors
     try {
       await user.save();
+      res.status(204).type("json").send(user.toJSON());
     } catch (e) {
       const error = e as Error.ValidationError;
-      throw new ClientError(processErrors(error));
+      res.status(400).type("json").send(processErrors(error));
     }
-
-    res.status(204).type("json").send(user.toJSON());
   };
 
   static deleteUser = async (
@@ -121,7 +132,13 @@ class UserController {
     const id = req.params.id;
 
     // Mongoose automatically casts the id to ObjectID
-    const user = await User.findById(id).select(["_id", "username", "role"]);
+    const user = await User.findById(id).select([
+      "_id",
+      "username",
+      "role",
+      "articles",
+      "followers",
+    ]);
     if (!user) throw new NotFoundError(`User with ID ${id} not found`);
 
     await user.delete();

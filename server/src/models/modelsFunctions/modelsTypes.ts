@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
 
+type Follwing = {
+  name: string;
+  email: string;
+};
 type Article = {
   title: string;
   content: string;
@@ -10,6 +14,7 @@ interface IUser {
   password: string;
   role: string;
   articles: Article[] | [];
+  followers: Follwing[] | [];
 }
 
 interface userModelInterface extends mongoose.Model<UserDoc> {
@@ -20,6 +25,8 @@ interface UserDoc extends mongoose.Document {
   username: string;
   password: string;
   role: string;
+  articles: Article[] | [];
+  followers: Follwing[] | [];
   isPasswordCorrect(providedPassword: string): Promise<boolean>;
 }
-export { IUser, userModelInterface, UserDoc };
+export { IUser, userModelInterface, UserDoc, Follwing };
