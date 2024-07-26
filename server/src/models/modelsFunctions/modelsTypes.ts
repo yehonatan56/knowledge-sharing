@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 type Follwing = {
   name: string;
-  email: string;
+  phone: string;
 };
 type Article = {
   title: string;
@@ -29,4 +29,4 @@ interface UserDoc extends mongoose.Document {
   followers: Follwing[] | [];
   isPasswordCorrect(providedPassword: string): Promise<boolean>;
 }
-export { IUser, userModelInterface, UserDoc, Follwing };
+export { IUser, userModelInterface, UserDoc, Article, Follwing };

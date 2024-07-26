@@ -6,6 +6,7 @@ import routes from "./routes/index";
 // Middleware
 import { errorHandler } from "./middleware/errorHandler";
 import config from "./config";
+import { startWhatsapp } from "./whatsapp";
 
 const app = express();
 app.use(json());
@@ -14,7 +15,7 @@ app.get("/", (req, res) => {
 });
 // Add the routes with the base prefix
 app.use("/" + config.prefix, routes);
-
+startWhatsapp();
 // Add error handling
 app.use(errorHandler);
 
